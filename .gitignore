@@ -1,0 +1,5 @@
+/hello
+/easy-go-in-docker
+bin/
+/tiny-golang-docker
+Godeps/
