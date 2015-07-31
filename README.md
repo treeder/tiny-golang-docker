@@ -19,17 +19,23 @@ godep save -r
 
 ## 2. Build program
 
-We want this to be static because we're running it inside a container with nothing in it.
-I've put all the commands in build.sh, so just run that to build.
+We want this to be static because we're running it inside a container with nothing in it, so this command is a bit long, but
+just copy and paste it into your console.
 
 ```
-./build.sh
+docker run --rm -it -v "$GOPATH":/gopath -v "$(pwd)":/app -e "GOPATH=/gopath" -w /app golang:1.4.2 sh -c 'CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags="-s" -o hello'
 ```
+
+<!--
+Can test this before building full image:
+docker run --rm -it -v "$(pwd)":/app -w /app -p 8080:8080 centurylink/ca-certs ./hello
+-->
 
 ## 3. Build Docker image with program in it
 
-See the Dockerfile in this repo to see how simple it is. It's based off an image that is just the Docker
-scratch image + certificate files to support SSL so it's super tiny.
+The Dockerfile in this repo will take care of this, it's really simple (take a look).
+It's based off an image that is just the Docker scratch image + certificate files to support SSL so it's
+as small as it can be.
 
 ```
 docker build -t treeder/go-hello-http .
@@ -37,14 +43,16 @@ docker build -t treeder/go-hello-http .
 
 ## 4. Run it
 
+Now that we built the image, let's run it.
+
 ```
 docker run --rm -it -p 8080:8080 treeder/go-hello-http
 ```
 
-Now check out http://localhost:8080/
+Surf to: http://localhost:8080/
 
 Boom.
 
 ## Further Reading
 
-If you want to cross compile this to a bunch of different platforms, see this: https://medium.com/iron-io-blog/how-to-cross-compile-go-programs-using-docker-beaa102a316d.
+If you want to cross compile a Go program to a bunch of different platforms, see this: https://medium.com/iron-io-blog/how-to-cross-compile-go-programs-using-docker-beaa102a316d.
