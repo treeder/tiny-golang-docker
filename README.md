@@ -1,7 +1,7 @@
 This is an example for how to build a teeny, tiny Docker image for your golang programs.
 
 This example is an web server that prints Hello World and ends up in a **4.7MB** Docker image.
-
+  
 ## 0. Clone this repo into your GOPATH
 
 Clone it into `$GOPATH/src/github.com/treeder`.
